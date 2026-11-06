@@ -1,0 +1,31 @@
+id,path,k3s_runnable,container_runnable,bpftrace_detectable,tracepoint_or_kprobe,notes
+T1611,atomics/T1611/T1611.yaml,Yes (Native K8s/Container),Yes,Yes,tracepoint:syscalls:sys_enter_setns | tracepoint:syscalls:sys_enter_mount | kprobe:do_mount,Native K8s; deployed via kubectl with hostPID and privileged nsenter breakout
+T1068,atomics/T1068/T1068.yaml,No (Windows only),No (Windows only),No (Windows only),N/A,Windows only; BYOVD kernel driver exploitation
+T1070,atomics/T1070/T1070.yaml,No (Windows only),No (Windows only),No (Windows only),N/A,Windows only; FSUtil USN journal manipulation
+T1543,,No (No emulation),No (No emulation),No (No emulation),N/A,Parent technique; no test cases exist in Atomic Red Team
+T1609,atomics/T1609/T1609.yaml,Yes (Native K8s/Container),Yes,Yes,tracepoint:syscalls:sys_enter_execve | tracepoint:syscalls:sys_enter_setns | kprobe:do_execve,Native K8s; administrative execution via kubectl exec
+T1070.003,atomics/T1070.003/T1070.003.yaml,Yes (In-Pod / Linux Node),Yes,Yes,tracepoint:syscalls:sys_enter_unlinkat | tracepoint:syscalls:sys_enter_truncate | tracepoint:syscalls:sys_enter_openat,In-Pod workload; command history clearing (.bash_history)
+T1070.004,atomics/T1070.004/T1070.004.yaml,Yes (In-Pod / Linux Node),Yes,Yes,tracepoint:syscalls:sys_enter_unlinkat | tracepoint:syscalls:sys_enter_rmdir | kprobe:do_unlinkat,In-Pod workload; file deletion via rm/shred
+T1070.005,atomics/T1070.005/T1070.005.yaml,No (Windows only),No (Windows only),No (Windows only),N/A,Windows only; network share removal via net share
+T1070.006,atomics/T1070.006/T1070.006.yaml,Yes (In-Pod / Linux Node),Yes,Yes,tracepoint:syscalls:sys_enter_utimensat | tracepoint:syscalls:sys_enter_clock_settime | kprobe:do_utimes,In-Pod workload; file timestamp manipulation via touch -t
+T1070.007,,No (No emulation),No (No emulation),No (No emulation),N/A,No test cases exist in Atomic Red Team
+T1070.008,atomics/T1070.008/T1070.008.yaml,Yes (In-Pod / Linux Node),Yes,Yes,tracepoint:syscalls:sys_enter_unlinkat | tracepoint:syscalls:sys_enter_openat | kprobe:do_unlinkat,In-Pod workload; mailbox spool data deletion (/var/spool/mail)
+T1070.009,,No (No emulation),No (No emulation),No (No emulation),N/A,No test cases exist in Atomic Red Team
+T1070.010,,No (No emulation),No (No emulation),No (No emulation),N/A,No test cases exist in Atomic Red Team
+T1543.001,atomics/T1543.001/T1543.001.yaml,No (macOS only),No (macOS only),No (macOS only),N/A,macOS only; LaunchAgent plist persistence
+T1543.002,atomics/T1543.002/T1543.002.yaml,Yes (Host Node - Requires Root Access),No (Requires Host Node root / systemd),Yes,tracepoint:syscalls:sys_enter_openat | tracepoint:syscalls:sys_enter_execve | kprobe:do_sys_openat2,Node-level execution; requires root access on host node (systemd service creation)
+T1543.003,atomics/T1543.003/T1543.003.yaml,No (Windows only),No (Windows only),No (Windows only),N/A,Windows only; Windows service installation via sc.exe
+T1543.004,atomics/T1543.004/T1543.004.yaml,No (macOS only),No (macOS only),No (macOS only),N/A,macOS only; LaunchDaemon plist persistence
+T1543.005,,No (No emulation),No (No emulation),No (No emulation),N/A,No test cases exist in Atomic Red Team
+T1053.007,atomics/T1053.007/T1053.007.yaml,Yes (Native K8s/Container),Yes,Yes,tracepoint:syscalls:sys_enter_execve | tracepoint:syscalls:sys_enter_connect | kprobe:tcp_v4_connect,Native K8s; Kubernetes CronJob creation
+T1105,atomics/T1105/T1105.yaml,Yes (Native K8s/Container),Yes,Yes,tracepoint:syscalls:sys_enter_connect | kprobe:tcp_v4_connect | tracepoint:syscalls:sys_enter_openat,Native K8s; ingress tool transfer via ephemeral curl pod
+T1136.001,atomics/T1136.001/T1136.001.yaml,Yes (Native K8s/Container),Yes,Yes,tracepoint:syscalls:sys_enter_openat | tracepoint:syscalls:sys_enter_execve | kprobe:do_sys_openat2,Native K8s; local account creation via adduser in pod
+T1053.002,atomics/T1053.002/T1053.002.yaml,Yes (Native K8s/Container),Yes,Yes,tracepoint:syscalls:sys_enter_openat | tracepoint:syscalls:sys_enter_execve,Native K8s; scheduled task via at daemon in pod
+T1059.004,atomics/T1059.004/T1059.004.yaml,Yes (In-Pod / Linux Node),Yes,Yes,tracepoint:syscalls:sys_enter_execve | tracepoint:syscalls:sys_enter_dup2 | tracepoint:syscalls:sys_enter_pipe,In-Pod workload; living-off-the-land subshell execution via awk
+T1055.009,atomics/T1055.009/T1055.009.yaml,Yes (In-Pod / Linux Node),Yes,Yes,tracepoint:syscalls:sys_enter_ptrace | tracepoint:syscalls:sys_enter_process_vm_writev | tracepoint:syscalls:sys_enter_openat,In-Pod workload; process memory overwrite path (/proc/$PID/mem)
+T1548.001,atomics/T1548.001/T1548.001.yaml,Yes (In-Pod / Linux Node),Yes,Yes,tracepoint:syscalls:sys_enter_fchmodat | tracepoint:syscalls:sys_enter_fchmod | tracepoint:syscalls:sys_enter_capset,In-Pod workload; SUID binary creation (chmod 4755)
+T1014,atomics/T1014/T1014.yaml,Yes (Host Node - Requires Root Access),No (Requires Host Node root / insmod),Yes,tracepoint:syscalls:sys_enter_init_module | tracepoint:syscalls:sys_enter_finit_module | kprobe:do_init_module,Node-level execution; requires root access on host node (kernel module insmod)
+T1003.008,atomics/T1003.008/T1003.008.yaml,Yes (In-Pod / Linux Node),Yes,Yes,tracepoint:syscalls:sys_enter_openat | tracepoint:syscalls:sys_enter_openat2 | kprobe:vfs_read,In-Pod workload; credential dumping (/etc/shadow reading)
+T1053.003,atomics/T1053.003/T1053.003.yaml,Yes (In-Pod / Linux Node),Yes,Yes,tracepoint:syscalls:sys_enter_openat | tracepoint:syscalls:sys_enter_renameat2 | tracepoint:syscalls:sys_enter_unlinkat,In-Pod workload; cron persistence file creation (/etc/cron.d)
+T1046,atomics/T1046/T1046.yaml,Yes (In-Pod / Linux Node),Yes,Yes,tracepoint:syscalls:sys_enter_connect | kprobe:tcp_v4_connect | tracepoint:syscalls:sys_enter_socket,In-Pod workload; network service discovery port probe
+T1036.003,atomics/T1036.003/T1036.003.yaml,Yes (In-Pod / Linux Node),Yes,Yes,tracepoint:syscalls:sys_enter_execve | tracepoint:syscalls:sys_enter_openat | kprobe:do_execve,In-Pod workload; masquerading binary name (/tmp/crond)
